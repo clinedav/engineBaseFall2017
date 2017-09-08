@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<!-- HTML HEAD ELEMENT - DEFINES CSS FOR THE PAGE -->
+<head>
+	<meta charset="utf-8">
+    <style>
+	    body { background-color: #002200; }
+	    h3,p { color: #FFFF00; }
+	    canvas { background-color: #000044; }
+	    #debugContainer { color: #FFFFFF; position: absolute; z-index: 100;}
+    </style>
+    <title>Game Engine Scene Test</title>
+</head>
+
+<!-- ==================================================================== -->
+
+<!-- HTML BODY TAG - DEFINES THE HTML LAYOUT FOR THE PAGE -->
+<body oncontextmenu="return false;">
+
+<!-- INCLUDE SCRIPTS -->
+<script src="../threejs/build/three.js"></script>
+<script src="gameEngine0.js"></script>
+
+<!-- GAME SPECIFIC INCLUDES -->
+<script src="scene0bData.js"></script>
+
+<!-- DEFINE LEFT DIV TAG - FOR DEBUG PRINTOUTS -->
+<div id="debugContainer">
+<pre id="debug"></pre>
+</div>
+
+
+<script>
+//----------------------------------------------------------------------//
+// THE MAIN CODE FOR THE GAME
+//----------------------------------------------------------------------//
+
+window.onload = function()
+{
+	// Start engine in full screen mode (really just full browswer)
+	// It will create its own canvas element in this case.
+	engine.DEBUG = false;
+	initEngineFullScreen();
+
+	// Parse the scene and start the game loop
+	parseScene(level0);
+	startGameLoop();
+}
+
+//----------------------------------------------------------------------//
+// CONTROL SCRIPS
+//----------------------------------------------------------------------//
+
+var sceneControl = function(sceneNode)
+{
+	var elapsedTime = getElapsedTime();
+	var userData = sceneNode["userData"];
+
+	var children = sceneNode.children;
+	//debug("children " + children.length + "\n");
+	for (var i=0; i < children.length; i++)
+	{
+		var child = children[i];
+		if (child instanceof THREE.Mesh)
+		{
+			var x = Math.cos(elapsedTime*1.15*(1.0+i*0.1) + 2.0*i);
+			x = 2.0*x*x*x;
+
+			var y = Math.sin(elapsedTime*1.27 + 2.0*i);
+			y = 2.0*y*y*y;
+
+			child.position.x = x;
+			child.position.y = y;
+
+			var s = 0.2 + 0.1 * Math.cos(elapsedTime+i);
+			child.scale.set(s,s,s)
+		}
+	}
+}
+</script>
+
+</body>
+</html>
+

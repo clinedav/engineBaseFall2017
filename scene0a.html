@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<!-- HTML HEAD ELEMENT - DEFINES CSS FOR THE PAGE -->
+<head>
+	<meta charset="utf-8">
+    <style>
+	    body { background-color: #002200; }
+	    h3,p { color: #FFFF00; }
+	    canvas { background-color: #000044; }
+	    #debugContainer { color: #FFFFFF; position: absolute; z-index: 100;}
+    </style>
+    <title>Game Engine Scene Test</title>
+</head>
+
+<!-- ==================================================================== -->
+
+<!-- HTML BODY TAG - DEFINES THE HTML LAYOUT FOR THE PAGE -->
+<body oncontextmenu="return false;">
+
+<!-- INCLUDE SCRIPTS -->
+<script src="../threejs/build/three.js"></script>
+<script src="gameEngine0.js"></script>
+
+<!-- GAME SPECIFIC INCLUDES -->
+<script src="scene0aData.js"></script>
+
+<!-- DEFINE LEFT DIV TAG - FOR DEBUG PRINTOUTS -->
+<div id="debugContainer">
+<pre id="debug"></pre>
+</div>
+
+<!-- MAKE CANVAS AND OTHER STARTING ELEMENTS  -->
+<center>
+	<br/>
+	<canvas id="gameCanvas" width="600" height="400"></canvas>
+	<h3 id="scoreboard">scoreboard</h3>
+</center>
+
+
+<script>
+//----------------------------------------------------------------------//
+// THE MAIN CODE FOR THE GAME
+//----------------------------------------------------------------------//
+
+window.onload = function()
+{
+	// Initialize the engine
+	engine.DEBUG = false;
+	var canvas = document.getElementById("gameCanvas");
+	initEngine(canvas);
+
+	// Set up any event-based input for the current gameState
+	gameState.onMouseMove = onMouseMove;
+	gameState.onClick = onClick;
+	gameState.onKeyDown = onKeyDown;
+
+	// Parse level0 (into a Three.js scene) and star the game loop
+	parseScene(level0); // upfront loaded Javscript object
+	//loadScene("scene0a.json"); // asynchronous loading of JSON
+	startGameLoop();
+}
+
+//----------------------------------------------------------------------//
+// EVENT HANDLERS
+//----------------------------------------------------------------------//
+
+var onClick = function(event)
+{
+	var scoreboard = document.getElementById("scoreboard");
+	scoreboard.innerHTML = "Click";
+}
+
+var onMouseMove = function(event)
+{
+	var scoreboard = document.getElementById("scoreboard");
+	var s = "Move: " + event.clientX + ", " + event.clientY;
+	scoreboard.innerHTML = s;
+}
+
+var onKeyDown = function(event)
+{
+	var scoreboard = document.getElementById("scoreboard");
+	var key = event.keyCode ? event.keyCode : event.which;
+	scoreboard.innerHTML = "Keycode: " + key;
+}
+</script>
+
+</body>
+</html>
